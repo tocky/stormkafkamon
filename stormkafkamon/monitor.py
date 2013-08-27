@@ -19,19 +19,30 @@ def sizeof_fmt(num):
 def null_fmt(num):
     return num
 
+def comma_fmt(num):
+    return "{:,d}".format(num)
+
 def display(summary, friendly=False):
     if friendly:
         fmt = sizeof_fmt
+        cfmt = comma_fmt
     else:
         fmt = null_fmt
+        cfmt = null_fmt
 
     table = PrettyTable(['Broker', 'Topic', 'Partition', 'Earliest', 'Latest',
                         'Depth', 'Spout', 'Current', 'Delta'])
-    table.align['broker'] = 'l'
+    table.align['Broker'] = 'l'
+    table.align['Earliest'] = 'r'
+    table.align['Latest'] = 'r'
+    table.align['Depth'] = 'r'
+    table.align['Current'] = 'r'
+    table.align['Delta'] = 'r'
 
     for p in summary.partitions:
-        table.add_row([p.broker, p.topic, p.partition, p.earliest, p.latest,
-                      fmt(p.depth), p.spout, p.current, fmt(p.delta)])
+        table.add_row([p.broker, p.topic, p.partition, cfmt(p.earliest),
+                      cfmt(p.latest), fmt(p.depth), p.spout, cfmt(p.current),
+                      fmt(p.delta)])
     print table.get_string(sortby='Broker')
     print
     print 'Number of brokers:       %d' % summary.num_brokers
