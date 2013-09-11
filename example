@@ -16,3 +16,64 @@ Number of brokers:       2
 Number of partitions:    8
 Total broker depth:      89.9GB
 Total delta:             1.8MB
+
+
+##### No format option #####
+skmon --zserver zookeeper0 --topology FooTopology --spoutroot /consumers
++--------+-------+-----------+-----------+-----------+-----------+------------+-----------+-------+
+| Broker | Topic | Partition |  Earliest |    Latest |     Depth |   Spout    |   Current | Delta |
++--------+-------+-----------+-----------+-----------+-----------+------------+-----------+-------+
+| kafka0 |  hoge |     0     | 536871088 | 614696053 |  77824965 | bar_spout  | 614659926 | 36127 |
+| kafka1 |  hoge |     0     |         0 | 421117523 | 421117523 | bar_spout  | 421103798 | 13725 |
++--------+-------+-----------+-----------+-----------+-----------+------------+-----------+-------+
+
+Number of brokers:       2
+Number of partitions:    2
+Total broker depth:      498942488
+Total delta:             49852
+
+
+##### With friendly option #####
+skmon --zserver zookeeper0 --topology FooTopology --spoutroot /consumers --friendly
++--------+-------+-----------+-----------+-----------+---------+-----------+-----------+--------+
+| Broker | Topic | Partition |  Earliest |    Latest |   Depth |   Spout   |   Current |  Delta |
++--------+-------+-----------+-----------+-----------+---------+-----------+-----------+--------+
+| kafka0 |  hoge |     0     | 536871088 | 614696053 |  74.2MB | bar_spout | 614659926 | 35.3KB |
+| kafka1 |  hoge |     0     |         0 | 421117523 | 401.6MB | bar_spout | 421103798 | 13.4KB |
++--------+-------+-----------+-----------+-----------+--------+------------+-----------+--------+
+
+Number of brokers:       2
+Number of partitions:    2
+Total broker depth:      475.8MB
+Total delta:             48.7KB
+
+
+##### With commify option #####
+skmon --zserver zookeeper0 --topology FooTopology --spoutroot /consumers --commify
++--------+-------+-----------+-------------+-------------+-------------+-----------+-------------+--------+
+| Broker | Topic | Partition |    Earliest |      Latest |       Depth |   Spout   |     Current |  Delta |
++--------+-------+-----------+-------------+-------------+-------------+-----------+-------------+--------+
+| kafka0 |  hoge |     0     | 536,871,088 | 614,696,053 |  77,824,965 | bar_spout | 614,659,926 | 36,127 |
+| kafka1 |  hoge |     0     |           0 | 421,117,523 | 421,117,523 | bar_spout | 421,103,798 | 13,725 |
++--------+-------+-----------+-------------+-------------+-------------+-----------+-------------+--------+
+
+Number of brokers:       2
+Number of partitions:    2
+Total broker depth:      498,942,488
+Total delta:             49,852
+
+
+##### With friendly and commify options #####
+skmon --zserver zookeeper0 --topology FooTopology --spoutroot /consumers --friendly --commify
++--------+-------+-----------+-------------+-------------+---------+-----------+-------------+--------+
+| Broker | Topic | Partition |    Earliest |      Latest |   Depth |   Spout   |     Current |  Delta |
++--------+-------+-----------+-------------+-------------+---------+-----------+-------------+--------+
+| kafka0 |  hoge |     0     | 536,871,088 | 614,696,053 |  74.2MB | bar_spout | 614,659,926 | 35.3KB |
+| kafka1 |  hoge |     0     |           0 | 421,117,523 | 401.6MB | bar_spout | 421,103,798 | 13.4KB |
++--------+-------+-----------+-------------+-------------+---------+-----------+-------------+--------+
+
+Number of brokers:       2
+Number of partitions:    2
+Total broker depth:      475.8MB
+Total delta:             48.7KB
+

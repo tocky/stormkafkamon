@@ -22,13 +22,16 @@ def null_fmt(num):
 def comma_fmt(num):
     return "{:,d}".format(num)
 
-def display(summary, friendly=False):
-    if friendly:
-        fmt = sizeof_fmt
+def display(summary, friendly=False, commify=False):
+    if commify:
         cfmt = comma_fmt
     else:
-        fmt = null_fmt
         cfmt = null_fmt
+
+    if friendly:
+        fmt = sizeof_fmt
+    else:
+        fmt = cfmt if commify else null_fmt
 
     table = PrettyTable(['Broker', 'Topic', 'Partition', 'Earliest', 'Latest',
                         'Depth', 'Spout', 'Current', 'Delta'])
@@ -86,6 +89,8 @@ def read_args():
         help='Root path for Kafka Spout data in Zookeeper')
     parser.add_argument('--friendly', action='store_const', const=True,
                     help='Show friendlier data')
+    parser.add_argument('--commify', action='store_const', const=True,
+                    help='Comma format')
     parser.add_argument('--postjson', type=str,
                     help='endpoint to post json data to')
     return parser.parse_args()
@@ -107,7 +112,8 @@ def main():
         if options.postjson:
             post_json(options.postjson, zk_data)
         else:
-            display(zk_data, true_or_false_option(options.friendly))
+            display(zk_data, true_or_false_option(options.friendly),
+                    true_or_false_option(options.commify))
 
     return 0
 
